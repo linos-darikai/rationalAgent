@@ -1,5 +1,6 @@
 from PIL import Image, ImageTk
 import tkinter as tk
+import random
 class Dirt:
     def __init__(self):
         image_path = "./img/dirt.jpeg"
@@ -44,6 +45,25 @@ class Grid:
                 button = tk.Button(root, width=5, height=5, padx=10, pady=10)
                 button.grid(row=i, column=j, sticky="nsew")
                 self.__button_positions[(i, j)] = button
+    def populate_grid(self, degree):
+        num_dirt = round(degree * (n **2))
+        counter = 0
+        for i in self.__button_positions:
+            if counter == num_dirt:
+                break
+            random_num = random.random()
+            if random_num > 0.5:
+                dirt = Dirt()
+                self.__dirt_positions[i] = dirt
+                self.place_dirt_image(i, dirt)
+                counter += 1
+
+    def place_dirt_image(self, position, dirt_object):
+        button = self.__button_positions[position]
+        if dirt_object.get_img() is not None:
+            button.config(image=dirt_object.get_img())
+
+
                 
         
     
@@ -53,7 +73,6 @@ if __name__ == "__main__":
     root = tk.Tk()
     root.title("Grid Simulation")
 
-    # Get grid size from user input
     n = int(input("Enter grid size (N): ")) 
     grid = Grid(n)
     window_width = grid.get_width()
@@ -61,6 +80,7 @@ if __name__ == "__main__":
     root.geometry(f"{window_width}x{window_height}") 
 
     grid.create_grid(root)
+    grid.populate_grid(0.3)
 
     root.mainloop()
 
