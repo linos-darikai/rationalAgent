@@ -55,13 +55,55 @@ class Grid:
             if random_num > 0.5:
                 dirt = Dirt()
                 self.__dirt_positions[i] = dirt
-                self.place_dirt_image(i, dirt)
+                self.place_image(i, dirt)
                 counter += 1
 
-    def place_dirt_image(self, position, dirt_object):
+    def place_image(self, position, dirt_object):
         button = self.__button_positions[position]
         if dirt_object.get_img() is not None:
             button.config(image=dirt_object.get_img())
+
+
+class Agent:
+    def __init__(self):
+        self.__strategy= []
+        image_path = "./img/vaccum_cleaner.jpeg"
+        self.__start_position = (0,0)
+        try:
+            img = Image.open(image_path)
+            img = img.resize((100, 100))
+
+            self.__img = ImageTk.PhotoImage(img)
+        except FileNotFoundError:
+            print(f"Error: Image file '{image_path}' not found. Using a default image.")
+            self.__img = None
+
+    
+    def get_strategy(self):
+        return self.__strategy
+    def get_start_pos(self):
+        return self.__start_position
+    def start(self, grid_object):
+        if self.__start_position in grid_object.get_dirt_positions():
+            grid_object.place
+        #check if starting position has dirt
+            #if it does remove it replace with the agent image
+        
+    
+    def move(self, direction):
+        #can move left right and up and down
+        # we can use the tuple to move up x and left and right with y
+    
+    def remove_dirt(self, grid_object):
+        # remove the image from the button replace with 
+
+    
+    
+
+    #strategy functions here
+    # they would mostly focus on movement and how they move
+
+
 
 
                 
