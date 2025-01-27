@@ -40,12 +40,20 @@ class Grid:
     def get_height(self):
         return self.__window_height
     def create_grid(self, root):
+        """
+        Function creates the grid and put the pos in a dirt positions
+        root: the TK root object
+        """
         for i in range(self.__n):
             for j in range(self.__n):
                 button = tk.Button(root, width=5, height=5, padx=10, pady=10)
                 button.grid(row=i, column=j, sticky="nsew")
                 self.__button_positions[(i, j)] = button
     def populate_grid(self, degree):
+        """
+        Fuction populates the grid with the degree or extent
+        degree : float
+        """
         num_dirt = round(degree * (n **2))
         counter = 0
         for i in self.__button_positions:
@@ -58,10 +66,25 @@ class Grid:
                 self.place_image(i, dirt)
                 counter += 1
 
-    def place_image(self, position, dirt_object):
+    def place_image(self, position, img_object):
+        """
+        Fuction places the image in a button at position
+        position : tuple of position(x, y)
+        img_object: either dirt obj or agent obj
+        """
         button = self.__button_positions[position]
-        if dirt_object.get_img() is not None:
-            button.config(image=dirt_object.get_img())
+        if img_object.get_img() is not None:
+            button.config(image=img_object.get_img())
+    def remove_dirt_obj(self, position):
+        """
+        Function removes dirt in position 
+        position: tuple
+        """
+        if position in self.__dirt_positions:
+            self.__dirt_positions.pop(position)
+        
+
+
 
 
 class Agent:
@@ -83,19 +106,39 @@ class Agent:
         return self.__strategy
     def get_start_pos(self):
         return self.__start_position
+    def get_img(self):
+        return self.__img
     def start(self, grid_object):
-        if self.__start_position in grid_object.get_dirt_positions():
-            grid_object.place
-        #check if starting position has dirt
-            #if it does remove it replace with the agent image
+        """
+        Fuction puts the agent object at the starting object
+        grid_object: the actual grid object
+        """
+        print("power")
+        if self.__img:
+            print("seen")
+            self.remove_dirt(grid_object=grid_object, position= self.__start_position)
+        else:
+            print("No img")
         
     
     def move(self, direction):
+        """
+        Function creates the movement of the agent depending on the direction
+        direction: char (a for left, d for right, w for up, s for down)
+        """
         #can move left right and up and down
         # we can use the tuple to move up x and left and right with y
     
-    def remove_dirt(self, grid_object):
-        # remove the image from the button replace with 
+    def remove_dirt(self, position, grid_object):
+        """
+        Function removes the dict object from dict and removes img
+        grid_object: actual grid object
+        """
+        if position in grid_object.get_dirt_positions():
+            print("hit")
+            grid_object.place_image(position, self)
+            print("hitaable")
+            grid_object.remove_dirt_obj(position)
 
     
     
@@ -117,12 +160,14 @@ if __name__ == "__main__":
 
     n = int(input("Enter grid size (N): ")) 
     grid = Grid(n)
+    agent = Agent()
     window_width = grid.get_width()
     window_height = grid.get_height()
     root.geometry(f"{window_width}x{window_height}") 
 
     grid.create_grid(root)
     grid.populate_grid(0.3)
+    agent.start(grid)
 
     root.mainloop()
 
