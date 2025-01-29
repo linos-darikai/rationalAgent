@@ -38,6 +38,8 @@ class Grid:
         return self.__dirt_positions
     def get_width(self):
         return self.__window_width
+    def get_n(self):
+        return self.__n
     def get_height(self):
         return self.__window_height
     def create_grid(self, parent):
@@ -116,7 +118,7 @@ class Agent:
             print(f"Error: Image file '{image_path}' not found. Using a default image.")
             self.__img = None
 
-    
+    #getter methods
     def get_strategy(self):
         return self.__strategy
     def get_start_pos(self):
@@ -143,10 +145,6 @@ class Agent:
             self.move_agent(grid_object=grid_object, position= self.__start_position)
         else:
             print("No img")
-    def strategy_one(self):
-        """
-        Function mimicks
-        """
     
     def move_agent(self, position, grid_object):
         """
@@ -183,6 +181,42 @@ class StrategyOne:
             
             if self.current_i < n:
                 root.after(500, self.operate_agent)  # 500ms = 0.5 second delay
+class StrategyTwo:
+    def __init__(self, grid_object, agent):
+        self.__grid_object = grid_object
+        self.__current_position = agent.get_current_position()
+    def move(self, direction):
+        """
+        Function moves an agent according to the direction of movement
+        direction: String has values of a, w, s, d which are left, up, down, right respectively
+        """
+        match direction:
+            case "a":
+                if not (self.__current_position[0] <= 0):
+                    position = (self.__current_position[0] - 1, self.__current_position[1])
+                    agent.move_agent(position=position, grid_object=self.__grid_object)
+            case "d":
+                if not (self.__current_position[0] >= (n -1)):
+                    position = (self.__current_position[0] + 1, self.__current_position[1])
+                    agent.move_agent(position=position, grid_object=self.__grid_object)
+            case "w":
+                if not (self.__current_position[1] <= 0):
+                    position = (self.__current_position[0], self.__current_position[1] - 1)
+                    agent.move_agent(position=position, grid_object=self.__grid_object)
+            case "s":
+                if not (self.__current_position[1] >= n - 1):
+                    position = (self.__current_position[0], self.__current_position[1] - 1)
+                    agent.move_agent(position=position, grid_object=self.__grid_object)
+                
+
+
+    
+    def operate_agent(self):
+        """
+        """
+
+
+        
 
     
     
